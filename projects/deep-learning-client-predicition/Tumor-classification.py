@@ -1,22 +1,13 @@
-
-
-#
-#
-# UTILITY FUNCTION
-
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.metrics import accuracy_score
 import tensorflow as tf
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
 import pandas
 import numpy as np
 from pathlib import Path
@@ -30,42 +21,23 @@ def _get_current_folder() -> str:
     # get the folder of the absolute path
     return os.path.dirname(absolute_path)
 
-# UTILITY FUNCTION
-#
-#
 
-
-# to run in a terminal -> 'pip install pandas'
-
-csv_filepath = f"{_get_current_folder()}/Social_Network_Ads.csv"
-
-
-# df -> means "data frame"
+csv_filepath = f"{_get_current_folder()}/Cancer_Data.Csv"
 df = pandas.read_csv(csv_filepath)
 
-
-print()
-print("#")
 print("# RAW DATAFRAME")
-print("#")
-print()
-
 print(df)
-
 
 X = df.iloc[:, 1:-1].values
 print("X (inputs)")
 print(X)
-y = df.iloc[:, -1].values  # will contains the values of the column 'Purchased'
+
+# will contains the values of the column 'class:Tumor type'
+y = df.iloc[:, -1].values
+y = (y > 3)
 
 print("y (outputs)")
 print(y)
-
-le = LabelEncoder()
-X[:, 0] = le.fit_transform(X[:, 0])
-
-print("Gender is now encoded", X)
-
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=0)
@@ -137,7 +109,7 @@ def KNeighbors_pred(X_input):
 
 def ann_prediction(X_input):
 
-    model_filepath = f"{_get_current_folder()}/my-model.keras"
+    model_filepath = f"{_get_current_folder()}/Tumor-type.keras"
 
     model_file = Path(model_filepath)
 
@@ -154,11 +126,14 @@ def ann_prediction(X_input):
         print("training new model")
 
         ann = tf.keras.models.Sequential()
-        ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
+        ann.add(tf.keras.layers.Dense(
+            units=6,  activation='relu'))
         ann.add(tf.keras.layers.Dropout(rate=0.3))
-        ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
+        ann.add(tf.keras.layers.Dense(
+            units=6,  activation='relu'))
         ann.add(tf.keras.layers.Dropout(rate=0.3))
-        ann.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
+        ann.add(tf.keras.layers.Dense(
+            units=1,  activation='sigmoid'))
 
         ann.compile(optimizer='adam', loss='binary_crossentropy',
                     metrics=['accuracy'])
@@ -218,86 +193,26 @@ all_predictions.sort(reverse=True, key=my_sort_func_by_score)
 
 print("sorted")
 for curr_values in all_predictions:
-    print(("->", curr_values.name, curr_values.accuracy_score))
+    print("->", curr_values.name, curr_values.accuracy_score)
 
 best_pred = all_predictions[0]  # Highest value
 worst_pred = all_predictions[-1]  # Lowest value
 
-# Visualizing
 
-# men and women purchase plot
-X_set, y_set = sc.inverse_transform(X_train), y_train
-X1, X2 = np.meshgrid(
-    np.arange(start=X_set[:, 1].min() - 10,
-              stop=X_set[:, 1].max() + 10, step=5.0),
-    np.arange(start=X_set[:, 2].min() - 10,
-              stop=X_set[:, 2].max() + 10, step=5.0)
-)
+print(best_pred)
+print(worst_pred)
 
-ones_array = np.ones(len(X1.ravel()))
-zeros_array = np.zeros(len(X1.ravel()))
-
-fig, (row1, row2) = plt.subplots(2, 2, figsize=(7, 7))
-
-(ax1, ax2) = row1
-(ax3, ax4) = row2
-
-ax1.contourf(X1, X2, best_pred.predict_func(sc.transform(np.array([ones_array, X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
-             alpha=0.75, cmap=ListedColormap(['#FA8072', '#1E90FF']))
-for i, j in enumerate(np.unique(y_set)):
-    ax1.scatter(X_set[y_set == j, 1], X_set[y_set == j, 2],
-                c=ListedColormap(['#FA8072', '#1E90FF'])(i), label=j)
-ax1.set_title(f'Best Did Purchase (for Men)\n"{best_pred.name}"', fontsize=8)
-ax1.set_xlabel('Age')
-ax1.set_ylabel('Estimated Salary')
-ax1.legend()
+# Does she have breast canser?
 
 
-ax2.contourf(X1, X2, best_pred.predict_func(sc.transform(np.array([zeros_array, X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
-             alpha=0.75, cmap=ListedColormap(['#FA8072', '#1E90FF']))
-for i, j in enumerate(np.unique(y_set)):
-    ax2.scatter(X_set[y_set == j, 1], X_set[y_set == j, 2],
-                c=ListedColormap(['#FA8072', '#1E90FF'])(i), label=j)
-ax2.set_title(f'Best Did Purchase (for women)\n"{best_pred.name}"', fontsize=8)
-ax2.set_xlabel('Age')
-ax2.set_ylabel('Estimated Salary')
-ax2.legend()
+def my_function(
+        Clump, uniformity_Cell_Size, uniformity_Cell_Shape, Marginal_Adhesion, Single_Epithelial_Cell_Size, Bare_Nuclei, Bland_Chromatin, Normal_Nucleoli, Mitoses):
 
-ax3.contourf(X1, X2, worst_pred.predict_func(sc.transform(np.array([ones_array, X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
-             alpha=0.75, cmap=ListedColormap(['#FA8072', '#1E90FF']))
-for i, j in enumerate(np.unique(y_set)):
-    ax3.scatter(X_set[y_set == j, 1], X_set[y_set == j, 2],
-                c=ListedColormap(['#FA8072', '#1E90FF'])(i), label=j)
-ax3.set_title(f'Worst Did Purchase (for men)\n"{worst_pred.name}"', fontsize=8)
-ax3.set_xlabel('Age')
-ax3.set_ylabel('Estimated Salary')
-ax3.legend()
+    # print(f"Does she with these features {Clump},{uniformity Cell Size},{Uniformity Cell Shape},{Marginal Adhesion},{Single Epithelial Cell Size}, {Bare Nuclei}, {Bland Chromatin}, {Normal Nucleoli}, {Mitoses} have breast cancer?")
 
-ax4.contourf(X1, X2, worst_pred.predict_func(sc.transform(np.array([zeros_array, X1.ravel(), X2.ravel()]).T)).reshape(X1.shape),
-             alpha=0.75, cmap=ListedColormap(['#FA8072', '#1E90FF']))
-for i, j in enumerate(np.unique(y_set)):
-    ax4.scatter(X_set[y_set == j, 1], X_set[y_set == j, 2],
-                c=ListedColormap(['#FA8072', '#1E90FF'])(i), label=j)
-ax4.set_title(
-    f'Worst Did Purchase (for women)\n"{worst_pred.name}"', fontsize=8)
-ax4.set_xlabel('Age')
-ax4.set_ylabel('Estimated Salary')
-ax4.legend()
+    input_data = sc.transform([[Clump, uniformity_Cell_Size, uniformity_Cell_Shape, Marginal_Adhesion,
+                              Single_Epithelial_Cell_Size, Bare_Nuclei, Bland_Chromatin, Normal_Nucleoli, Mitoses]])
 
-plt.tight_layout()
-plt.show(block=True)  # <- force the window to open and stay open
-
-
-def my_function(gender, age, salary):
-    if gender == (1):
-        gender_str = str("male")
-    else:
-        gender_str = str("female")
-
-    print(
-        f"will a {gender_str} of {age} earning {salary} buy my expensive car?")
-
-    input_data = sc.transform([[gender, age, salary]])
     print("Nural Network say:", ann_prediction(input_data))
     print("LogisticRegressionsay:", LogisticRegression_pred(input_data))
     print("NKNeighbors say:", KNeighbors_pred(input_data))
@@ -307,5 +222,5 @@ def my_function(gender, age, salary):
     print("RandomForest say:", RandomForest_pred(input_data))
 
 
-my_function(1, 40, 70000)
-my_function(0, 50, 90000)
+my_function(4, 1, 1, 3, 2, 1, 3, 1, 1)
+my_function(8, 10, 10, 8, 7, 10, 9, 7, 1)
