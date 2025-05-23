@@ -18,6 +18,7 @@ import numpy as np
 from pathlib import Path
 import spacy
 from sklearn.feature_extraction.text import TfidfVectorizer
+from catboost import CatBoostClassifier
 
 
 def _get_current_folder() -> str:
@@ -89,93 +90,105 @@ X_test = cv.transform(X_test).toarray()
 print("X.shape", X.shape)
 
 
-def RandomForest_pred(X_input):
+class my_Random_Forest:
+    def __init__(self):
+        self.classifier = RandomForestClassifier(
+            n_estimators=10, criterion='entropy', random_state=0)
+        self.classifier.fit(X_train, y_train)
 
-    classifier = RandomForestClassifier(
-        n_estimators=10, criterion='entropy', random_state=0)
-    classifier.fit(X_train, y_train)
-    y_pred = classifier.predict(X_input)
-
-    return y_pred
-
-
-def DecisionTree_pred(X_input):
-    classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
-    classifier.fit(X_train, y_train)
-
-    y_pred = classifier.predict(X_input)
-
-    return y_pred
+    def predict(self, X_input):
+        return self.classifier.predict(X_input)
 
 
-def GaussianNB_pred(X_input):
+class my_Decision_Tree:
+    def __init__(self):
+        self.classifier = DecisionTreeClassifier(
+            criterion='entropy', random_state=0)
+        self.classifier.fit(X_train, y_train)
 
-    classifier = GaussianNB()
-    classifier.fit(X_train, y_train)
-
-    y_pred = classifier.predict(X_input)
-
-    return y_pred
-
-
-def SVC_pred(X_input):
-
-    classifier = SVC(kernel='rbf', random_state=0)
-    classifier.fit(X_train, y_train)
-    y_pred = classifier.predict(X_input)
-
-    return y_pred
+    def predict(self, X_input):
+        return self.classifier.predict(X_input)
 
 
-def LogisticRegression_pred(X_input: np.ndarray) -> np.ndarray:
+class my_Gaussian_NB:
+    def __init__(self):
+        self.classifier = GaussianNB()
+        self.classifier.fit(X_train, y_train)
 
-    classifier = LogisticRegression(random_state=0, C=1)
-    classifier.fit(X_train, y_train)
-    y_pred = classifier.predict(X_input)
-
-    return y_pred
-
-
-def KNeighbors_pred(X_input):
-
-    classifier = KNeighborsClassifier(n_neighbors=5, metric='minkowski', p=2)
-    classifier.fit(X_train, y_train)
-    y_pred = classifier.predict(X_input)
-
-    return y_pred
+    def predict(self, X_input):
+        return self.classifier.predict(X_input)
 
 
-def ann_prediction(X_input):
+class my_SVC:
+    def __init__(self):
+        self.classifier = SVC(kernel='rbf', random_state=0)
+        self.classifier.fit(X_train, y_train)
 
-    model_filepath = f"{_get_current_folder()}/my-model.keras"
+    def predict(self, X_input):
+        return self.classifier.predict(X_input)
 
-    model_file = Path(model_filepath)
 
-    if model_file.exists() and model_file.is_file():
+class my_Logistic_Regression:
+    def __init__(self):
+        self.classifier = LogisticRegression(random_state=0, C=1)
+        self.classifier.fit(X_train, y_train)
 
-        ann = tf.keras.models.load_model(model_filepath)
+    def predict(self, X_input):
+        return self.classifier.predict(X_input)
 
-    else:
 
-        print("model file was not found")
-        print("training new model")
+class my_KNeighbors:
+    def __init__(self):
+        self.classifier = KNeighborsClassifier(
+            n_neighbors=5, metric='minkowski', p=2)
+        self.classifier.fit(X_train, y_train)
 
-        ann = tf.keras.models.Sequential()
-        ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
-        ann.add(tf.keras.layers.Dropout(rate=0.3))
-        ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
-        ann.add(tf.keras.layers.Dropout(rate=0.3))
-        ann.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
+    def predict(self, X_input):
+        return self.classifier.predict(X_input)
 
-        ann.compile(optimizer='adam', loss='binary_crossentropy',
-                    metrics=['accuracy'])
 
-        ann.fit(X_train, y_train, batch_size=32, epochs=100)
+class my_ann:
+    def __init__(self):
+        model_filepath = f"{_get_current_folder()}/my-model.keras"
 
-        ann.save(model_filepath)
+        model_file = Path(model_filepath)
 
-    y_pred = ann.predict(X_input, verbose=0)
-    return y_pred.reshape(-1, )
+        if model_file.exists() and model_file.is_file():
+
+            ann = tf.keras.models.load_model(model_filepath)
+
+        else:
+
+            print("model file was not found")
+            print("training new model")
+
+            ann = tf.keras.models.Sequential()
+            ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
+            ann.add(tf.keras.layers.Dropout(rate=0.3))
+            ann.add(tf.keras.layers.Dense(units=6, activation='relu'))
+            ann.add(tf.keras.layers.Dropout(rate=0.3))
+            ann.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
+
+            ann.compile(optimizer='adam', loss='binary_crossentropy',
+                        metrics=['accuracy'])
+
+            ann.fit(X_train, y_train, batch_size=32, epochs=100)
+
+            ann.save(model_filepath)
+
+        self.ann = ann
+
+    def predict(self, X_input):
+        return self.ann.predict(X_input, verbose=0).reshape(-1,)
+
+
+class my_Catboost:
+    def __init__(self):
+        self.classifier = CatBoostClassifier()
+        self.classifier.fit(X_train, y_train, verbose=0)
+
+    def predict(self, X_input):
+        return self.classifier.predict(X_input)
 
 
 class my_prediction_class:
@@ -183,32 +196,46 @@ class my_prediction_class:
     y_pred: np.ndarray
     accuracy_score: float
 
-    def __init__(self, name: str, predict_func):
+    def __init__(self, name: str, predictor):
         self.name = name
-        self.predict_func = predict_func
-        self.y_pred = predict_func(X_test) > 0.5
+        self.predictor = predictor
+        self.y_pred = self.predictor.predict(X_test) > 0.5
         self.accuracy_score = accuracy_score(y_test, self.y_pred)
 
 
 all_predictions: list[my_prediction_class] = []
 
 
+my_predictor = my_Random_Forest()
 all_predictions.append(my_prediction_class(
-    "deep learning      ", ann_prediction))
+    "random forest     ", my_predictor))
+my_predictor = my_Decision_Tree()
+all_predictions.append(my_prediction_class(
+    "decision tree     ", my_predictor))
+my_predictor = my_Gaussian_NB()
+all_predictions.append(my_prediction_class(
+    "GaussianNB        ", my_predictor))
 
+my_predictor = my_Logistic_Regression()
 all_predictions.append(my_prediction_class(
-    "logistic regression", LogisticRegression_pred))
+    "LogisticRegression", my_predictor))
 
+my_predictor = my_KNeighbors()
 all_predictions.append(my_prediction_class(
-    "k-nearest-neighbors", KNeighbors_pred))
+    "KNeighbors        ", my_predictor))
+
+my_predictor = my_ann()
 all_predictions.append(my_prediction_class(
-    "svc                ", SVC_pred))
+    "ann               ", my_predictor))
+
+my_predictor = my_SVC()
 all_predictions.append(my_prediction_class(
-    "naive bayes        ", GaussianNB_pred))
+    "svc               ", my_predictor))
+
+my_predictor = my_Catboost()
 all_predictions.append(my_prediction_class(
-    "decision tree      ", DecisionTree_pred))
-all_predictions.append(my_prediction_class(
-    "random forest      ", RandomForest_pred))
+    "Catboost          ", my_predictor))
+
 
 print("unsorted")
 for curr_values in all_predictions:
@@ -223,9 +250,10 @@ def my_sort_func_by_score(values: my_prediction_class):
 
 all_predictions.sort(reverse=True, key=my_sort_func_by_score)
 
+
 print("sorted")
 for curr_values in all_predictions:
-    print(("->", curr_values.name, curr_values.accuracy_score))
+    print("->", curr_values.name, curr_values.accuracy_score)
 
 
 def _predict_my_sentence(sentence: str, expected: bool):
@@ -238,7 +266,7 @@ def _predict_my_sentence(sentence: str, expected: bool):
     print(f" -> custom sentence -> '{sentence}'")
     print(f" -> we expect: {expected}")
     for value in all_predictions:
-        y_raw = value.predict_func(X_raw)
+        y_raw = value.predictor.predict(X_raw)
         y_raw = (y_raw >= 0.5)
 
         if y_raw[0] == expected:

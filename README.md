@@ -20,13 +20,14 @@ Some Machine Learning Project(s)
 
 ## Accuracy of Customer Reviews NLP Classification 
 ```
-('->', 'logistic regression', 0.865)
-('->', 'svc                ', 0.85)
-('->', 'deep learning      ', 0.825)
-('->', 'random forest      ', 0.785)
-('->', 'decision tree      ', 0.78)
-('->', 'naive bayes        ', 0.745)
-('->', 'k-nearest-neighbors', 0.575)
+-> LogisticRegression 0.865
+-> svc                0.85
+-> ann                0.825
+-> Catboost           0.795
+-> random forest      0.785
+-> decision tree      0.78
+-> GaussianNB         0.745
+-> KNeighbors         0.575
 ```
 
 ### Single Review Prediction
