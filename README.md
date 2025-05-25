@@ -9,13 +9,13 @@ Some Machine Learning Project(s)
 
 ## Accuracy of Tumor Classification 
 ```
--> deep learning 0.9708029197080292
--> logistic regression 0.9562043795620438
--> k-nearest-neighbors 0.9562043795620438
--> svc 0.9562043795620438
--> decision tree 0.9562043795620438
--> naive bayes 0.948905109489051
--> random forest 0.948905109489051
+-> deep learning       0.971
+-> logistic regression 0.956
+-> k-nearest-neighbors 0.956
+-> svc                 0.956
+-> decision tree       0.956
+-> naive bayes         0.949
+-> random forest       0.949
 ```
 
 ## Accuracy of Customer Reviews NLP Classification 

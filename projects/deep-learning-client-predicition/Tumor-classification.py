@@ -162,7 +162,7 @@ all_predictions: list[my_prediction_class] = []
 
 
 all_predictions.append(my_prediction_class(
-    "deep learning", ann_prediction))
+    "deep learning      ", ann_prediction))
 
 all_predictions.append(my_prediction_class(
     "logistic regression", LogisticRegression_pred))
@@ -170,17 +170,17 @@ all_predictions.append(my_prediction_class(
 all_predictions.append(my_prediction_class(
     "k-nearest-neighbors", KNeighbors_pred))
 all_predictions.append(my_prediction_class(
-    "svc", SVC_pred))
+    "svc                ", SVC_pred))
 all_predictions.append(my_prediction_class(
-    "naive bayes", GaussianNB_pred))
+    "naive bayes        ", GaussianNB_pred))
 all_predictions.append(my_prediction_class(
-    "decision tree", DecisionTree_pred))
+    "decision tree      ", DecisionTree_pred))
 all_predictions.append(my_prediction_class(
-    "random forest", RandomForest_pred))
+    "random forest      ", RandomForest_pred))
 
 print("unsorted")
 for curr_values in all_predictions:
-    print("->", curr_values.name, curr_values.accuracy_score)
+    print(f"-> {curr_values.name} {curr_values.accuracy_score:.3f}")
 
 # sort by score
 
@@ -193,7 +193,7 @@ all_predictions.sort(reverse=True, key=my_sort_func_by_score)
 
 print("sorted")
 for curr_values in all_predictions:
-    print("->", curr_values.name, curr_values.accuracy_score)
+    print(f"-> {curr_values.name} {curr_values.accuracy_score:.3f}")
 
 best_pred = all_predictions[0]  # Highest value
 worst_pred = all_predictions[-1]  # Lowest value
