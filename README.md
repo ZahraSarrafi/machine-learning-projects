@@ -104,4 +104,25 @@ Some Machine Learning Project(s)
  ---> prediction 'k-nearest-neighbors' say False -----> SUCCESS
  ```
 
+## Accuracy of Mental Health NLP Classification
+
+* the pre-processed dataset is saved and reused (faster restart)
+    * now ~6sec, was ~400sec
+* some models are saved (further faster restart)
+    * catboost (now ~1sec, was ~90sec)
+    * xgboost (now ~1sec, was ~20sec)
+    * ann (deep learning, now ~1sec, was ~170sec)
+
+```
+sorted
+-> svc                0.7338908017707821
+-> Catboost           0.7289719626168224
+-> ann                0.7260206591244466
+-> LogisticRegression 0.7255287752090507
+-> xgboost            0.7225774717166749
+-> random forest      0.6487948844072798
+-> KNeighbors         0.6064928676832267
+-> decision tree      0.5779636005902608
+-> GaussianNB         0.48844072798819477
+```
 
