@@ -175,3 +175,5 @@ cython_debug/
 
 *.keras
 *.model
+
+catboost_info
