@@ -3,6 +3,14 @@
 
 Some Machine Learning Project(s)
 
+## Country Data Analysis
+
+[link to jupyter notebook](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Country-Data-Analysis/country-data-analysis.ipynb)
+
+## Indoor Temperature Analysis
+
+[link to jupyter notebook](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Indoor_Temperature/indoor-temp.ipynb)
+
 ## Result of Classification for Social Ads
 
 ![Result of Classification](media/Figure_1.png)
