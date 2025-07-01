@@ -3,6 +3,10 @@
 
 Some Machine Learning Project(s)
 
+## Bank Customer Churn Analysis
+
+[link to jupyter notebook](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Bank-Customer-Churn/Bank-Churn-Dataset.ipynb)
+
 ## Country Data Analysis
 
 [link to jupyter notebook](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Country-Data-Analysis/country-data-analysis.ipynb)
