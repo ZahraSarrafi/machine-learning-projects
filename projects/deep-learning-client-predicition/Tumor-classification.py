@@ -202,7 +202,7 @@ worst_pred = all_predictions[-1]  # Lowest value
 print(best_pred)
 print(worst_pred)
 
-# Does she have breast canser?
+# Does she have breast cancer?
 
 
 def my_function(
