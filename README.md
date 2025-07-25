@@ -7,6 +7,17 @@ Some Machine Learning Project(s)
 
 [link to python file](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Breast-Cancer-CNN/src/main.py)
 
+```bash
+confusion matrix [[409, 91], [31, 369]]
+ -> is not malignant prediction
+   -> correct   409
+   -> incorrect 31
+ -> is malignant prediction
+   -> correct   369
+   -> incorrect 91
+accuracy_score 0.8644444444444445
+```
+
 ## Bank Customer Churn Analysis
 
 [link to jupyter notebook](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Bank-Customer-Churn/Bank-Churn-Dataset.ipynb)
