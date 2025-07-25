@@ -3,6 +3,10 @@
 
 Some Machine Learning Project(s)
 
+## Breast Cancer CNN Deep Neural Network
+
+[link to python file](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Breast-Cancer-CNN/src/main.py)
+
 ## Bank Customer Churn Analysis
 
 [link to jupyter notebook](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Bank-Customer-Churn/Bank-Churn-Dataset.ipynb)
