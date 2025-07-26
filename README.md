@@ -5,17 +5,17 @@ Some Machine Learning Project(s)
 
 ## Breast Cancer CNN Deep Neural Network
 
-[link to python file](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Breast-Cancer-CNN/src/main.py)
+[link to jupyter notebook](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Breast-Cancer-CNN/src/notebook.ipynb)
 
 ```bash
-confusion matrix [[409, 91], [31, 369]]
+confusion matrix [[441, 59], [33, 367]]
  -> is not malignant prediction
-   -> correct   409
-   -> incorrect 31
+   -> correct   441
+   -> incorrect 33
  -> is malignant prediction
-   -> correct   369
-   -> incorrect 91
-accuracy_score 0.8644444444444445
+   -> correct   367
+   -> incorrect 59
+accuracy_score 0.8977777777777778
 ```
 
 ## Bank Customer Churn Analysis
