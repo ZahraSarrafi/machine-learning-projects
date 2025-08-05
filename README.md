@@ -45,6 +45,21 @@ accuracy_score 0.8977777777777778
 -> random forest       0.949
 ```
 
+#### New version (using OOP in a Jupyter Notebook)
+
+[link to jupyter notebook](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Breast-Cancer-Analysis/Breast-Cancer.ipynb)
+
+```
+-> deep learning      0.993
+-> svc                0.993
+-> GaussianNB         0.985
+-> LogisticRegression 0.985
+-> KNeighbors         0.985
+-> Catboost           0.985
+-> random forest      0.978
+-> decision tree      0.948
+```
+
 ## Accuracy of Customer Reviews NLP Classification 
 ```
 -> LogisticRegression 0.865
