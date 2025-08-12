@@ -7,6 +7,8 @@ Some Machine Learning Project(s)
 
 [link to jupyter notebook](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Breast-Cancer-CNN/src/notebook.ipynb)
 
+before using keras_tuner:
+
 ```bash
 confusion matrix [[441, 59], [33, 367]]
  -> is not malignant prediction
@@ -17,6 +19,21 @@ confusion matrix [[441, 59], [33, 367]]
    -> incorrect 59
 accuracy_score 0.8977777777777778
 ```
+
+after using keras_tuner:
+
+```bash
+confusion matrix [[444, 56], [2, 398]]
+ -> is not malignant prediction
+   -> correct   444
+   -> incorrect 2
+ -> is malignant prediction
+   -> correct   398
+   -> incorrect 56
+accuracy_score 0.9355555555555556
+```
+
+[link to keras_tuner jupyter notebook](https://github.com/ZahraSarrafi/machine-learning-projects/blob/main/projects/Breast-Cancer-CNN/src/notebook-tuner-version.ipynb)
 
 ## Bank Customer Churn Analysis
 
